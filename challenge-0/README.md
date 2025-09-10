@@ -73,6 +73,28 @@ Now, time to deploy our resources to Azure!
 
 Resource deployment can take up to 10 minutes, afterwards you'll be able to find most of the resources on your resource group. In the meantime, you can proceed with the next step - opening a pre-configured development environment in GitHub Codespaces.
 
+NOTE: run the following is using a Microsoft subscription and want the resources to keep the tiers and networking connections:
+
+```bash
+RESOURCE_GROUP="your-resource-group"
+TAGS="CostControl=Ignore SecurityControl=Ignore"
+
+for resource_id in $(az resource list --resource-group $RESOURCE_GROUP --query "[].id" -o tsv); do
+  az resource tag --ids $resource_id --tags $TAGS
+done
+```
+
+Enable Shared Key Access on the Storage Account:
+
+```bash
+STORAGE_ACCOUNT_NAME="yourstorageaccountname"
+az storage account update \
+  --name $STORAGE_ACCOUNT_NAME \
+  --resource-group $RESOURCE_GROUP \  
+  --set allowBlobPublicAccess=Enabled allowSharedKeyAccess=true
+```
+
+
 ## 1.4 Verify the creation of your resources
 
 Go back to your `Azure Portal` and find your `Resource Group`that should by now contain 9 resources and look like this:
@@ -103,3 +125,4 @@ If the file is not created, simply copy over `.env.sample` to `.env` - then popu
 By reaching this section you should have every resource and installed the requirements necessary to conduct the hackathon. In the next challenges, you will use these services to start strongly your Azure AI Agents journey.
 
 Now the real fun begins!
+

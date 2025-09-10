@@ -24,6 +24,12 @@ In this Challenge 2, we will dedicate half of the time dedicating our time on: *
 
 ## 🛠️ Implementation Tasks
 
+Give permissions to the user: 
+
+```bash
+USER=$(az ad signed-in-user show --query userPrincipalName -o tsv)
+az role assignment create --role "Azure AI User" --assignee $USER --scope /subscriptions/$SUBS/resourceGroups/$RG
+
 ### Option 1 - Creating your Agent Backbone - On the Portal
 
 1. Navigate to the Azure portal and login with your account.
